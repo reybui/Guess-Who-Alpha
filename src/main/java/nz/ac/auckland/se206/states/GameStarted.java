@@ -12,6 +12,7 @@ import nz.ac.auckland.se206.speech.TextToSpeech;
  */
 public class GameStarted implements GameState {
 
+  private Boolean hasInteracted = false;
   private final GameStateContext context;
 
   /**
@@ -34,15 +35,16 @@ public class GameStarted implements GameState {
   @Override
   public void handleRectangleClick(MouseEvent event, String rectangleId) throws IOException {
     // Transition to chat view or provide an introduction based on the clicked rectangle
-    switch (rectangleId) {
-      case "rectCashier":
-        TextToSpeech.speak("Welcome to my cafe!");
-        return;
-      case "rectWaitress":
-        TextToSpeech.speak("Hi, let me know when you are ready to order!");
-        return;
-    }
-    App.openChat(event, context.getProfession(rectangleId));
+    // switch (rectangleId) {
+    //   case "rectCashier":
+    //     TextToSpeech.speak("Welcome to my cafe!");
+    //     return;
+    //   case "rectWaitress":
+    //     TextToSpeech.speak("Hi, let me know when you are ready to order!");
+    //     return;
+    // }
+    hasInteracted = true;
+    App.openChat(event, context.getSuspectName(rectangleId));
   }
 
   /**
@@ -53,7 +55,11 @@ public class GameStarted implements GameState {
    */
   @Override
   public void handleGuessClick() throws IOException {
-    TextToSpeech.speak("Make a guess, click on the " + context.getProfessionToGuess());
-    context.setState(context.getGuessingState());
+    if (hasInteracted) {
+      TextToSpeech.speak("Make a guess, click on the thief!");
+      context.setState(context.getGuessingState());
+    } else {
+      TextToSpeech.speak("You must interact with at least one suspect");
+    }
   }
 }

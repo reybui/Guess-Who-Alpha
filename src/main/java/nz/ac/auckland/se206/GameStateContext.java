@@ -1,19 +1,13 @@
 package nz.ac.auckland.se206;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.Set;
 import javafx.scene.input.MouseEvent;
 import nz.ac.auckland.se206.states.GameOver;
 import nz.ac.auckland.se206.states.GameStarted;
 import nz.ac.auckland.se206.states.GameState;
 import nz.ac.auckland.se206.states.Guessing;
-import org.yaml.snakeyaml.Yaml;
 
 /**
  * Context class for managing the state of the game. Handles transitions between different game
@@ -22,8 +16,8 @@ import org.yaml.snakeyaml.Yaml;
 public class GameStateContext {
 
   private final String rectIdToGuess;
-  private final String professionToGuess;
-  private final Map<String, String> rectanglesToProfession;
+  private final String suspectToGuess;
+  private final Map<String, String> rectanglesToSuspect;
   private final GameStarted gameStartedState;
   private final Guessing guessingState;
   private final GameOver gameOverState;
@@ -36,38 +30,49 @@ public class GameStateContext {
     gameOverState = new GameOver(this);
 
     gameState = gameStartedState; // Initial state
-    Map<String, Object> obj = null;
-    Yaml yaml = new Yaml();
-    try (InputStream inputStream =
-        GameStateContext.class.getClassLoader().getResourceAsStream("data/professions.yaml")) {
-      if (inputStream == null) {
-        throw new IllegalStateException("File not found!");
-      }
-      obj = yaml.load(inputStream);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
 
-    @SuppressWarnings("unchecked")
-    List<String> professions = (List<String>) obj.get("professions");
+    rectIdToGuess = "rectAdvisor";
 
-    Random random = new Random();
-    Set<String> randomProfessions = new HashSet<>();
-    while (randomProfessions.size() < 3) {
-      String profession = professions.get(random.nextInt(professions.size()));
-      randomProfessions.add(profession);
-    }
+    rectanglesToSuspect = new HashMap<>();
+    rectanglesToSuspect.put("rectForeign", "Foreign President");
+    rectanglesToSuspect.put("rectGuard", "Chief of security");
+    rectanglesToSuspect.put("rectAdvisor", "Kings personal advisor");
 
-    String[] randomProfessionsArray = randomProfessions.toArray(new String[3]);
-    rectanglesToProfession = new HashMap<>();
-    rectanglesToProfession.put("rectPerson1", randomProfessionsArray[0]);
-    rectanglesToProfession.put("rectPerson2", randomProfessionsArray[1]);
-    rectanglesToProfession.put("rectPerson3", randomProfessionsArray[2]);
+    suspectToGuess = rectanglesToSuspect.get(rectIdToGuess);
 
-    int randomNumber = random.nextInt(3);
-    rectIdToGuess =
-        randomNumber == 0 ? "rectPerson1" : ((randomNumber == 1) ? "rectPerson2" : "rectPerson3");
-    professionToGuess = rectanglesToProfession.get(rectIdToGuess);
+    // Map<String, Object> obj = null;
+    // Yaml yaml = new Yaml();
+    // try (InputStream inputStream =
+    //     GameStateContext.class.getClassLoader().getResourceAsStream("data/professions.yaml")) {
+    //   if (inputStream == null) {
+    //     throw new IllegalStateException("File not found!");
+    //   }
+    //   obj = yaml.load(inputStream);
+    // } catch (IOException e) {
+    //   e.printStackTrace();
+    // }
+
+    // @SuppressWarnings("unchecked")
+    // List<String> professions = (List<String>) obj.get("professions");
+
+    // Random random = new Random();
+    // Set<String> randomProfessions = new HashSet<>();
+    // while (randomProfessions.size() < 3) {
+    //   String profession = professions.get(random.nextInt(professions.size()));
+    //   randomProfessions.add(profession);
+    // }
+
+    // String[] randomProfessionsArray = randomProfessions.toArray(new String[3]);
+    // rectanglesToProfession = new HashMap<>();
+    // rectanglesToProfession.put("rectPerson1", randomProfessionsArray[0]);
+    // rectanglesToProfession.put("rectPerson2", randomProfessionsArray[1]);
+    // rectanglesToProfession.put("rectPerson3", randomProfessionsArray[2]);
+
+    // int randomNumber = random.nextInt(3);
+    // rectIdToGuess =
+    //     randomNumber == 0 ? "rectPerson1" : ((randomNumber == 1) ? "rectPerson2" :
+    // "rectPerson3");
+    // professionToGuess = rectanglesToProfession.get(rectIdToGuess);
   }
 
   /**
@@ -106,13 +111,17 @@ public class GameStateContext {
     return gameOverState;
   }
 
-  /**
-   * Gets the profession to be guessed.
-   *
-   * @return the profession to guess
-   */
-  public String getProfessionToGuess() {
-    return professionToGuess;
+  // /**
+  //  * Gets the profession to be guessed.
+  //  *
+  //  * @return the profession to guess
+  //  */
+  // public String getProfessionToGuess() {
+  //   return professionToGuess;
+  // }
+
+  public String getSuspectToGuess() {
+    return suspectToGuess;
   }
 
   /**
@@ -124,14 +133,18 @@ public class GameStateContext {
     return rectIdToGuess;
   }
 
-  /**
-   * Gets the profession associated with a specific rectangle ID.
-   *
-   * @param rectangleId the rectangle ID
-   * @return the profession associated with the rectangle ID
-   */
-  public String getProfession(String rectangleId) {
-    return rectanglesToProfession.get(rectangleId);
+  // /**
+  //  * Gets the profession associated with a specific rectangle ID.
+  //  *
+  //  * @param rectangleId the rectangle ID
+  //  * @return the profession associated with the rectangle ID
+  //  */
+  // public String getProfession(String rectangleId) {
+  //   return rectanglesToProfession.get(rectangleId);
+  // }
+
+  public String getSuspectName(String rectangleId) {
+    return rectanglesToSuspect.get(rectangleId);
   }
 
   /**
