@@ -13,6 +13,7 @@ import nz.ac.auckland.apiproxy.tts.TextToSpeechRequest;
 import nz.ac.auckland.apiproxy.tts.TextToSpeechRequest.Provider;
 import nz.ac.auckland.apiproxy.tts.TextToSpeechRequest.Voice;
 import nz.ac.auckland.apiproxy.tts.TextToSpeechResult;
+import nz.ac.auckland.se206.speech.VoiceTypes.VoiceType;
 
 /** A utility class for converting text to speech using the specified API proxy. */
 public class TextToSpeech {
@@ -23,7 +24,7 @@ public class TextToSpeech {
    * @param text the text to be converted to speech
    * @throws IllegalArgumentException if the text is null or empty
    */
-  public static void speak(String text) {
+  public static void speak(String text, VoiceType voiceType) {
     if (text == null || text.isEmpty()) {
       throw new IllegalArgumentException("Text should not be null or empty");
     }
@@ -35,7 +36,22 @@ public class TextToSpeech {
             try {
               ApiProxyConfig config = ApiProxyConfig.readConfig();
               Provider provider = Provider.GOOGLE;
-              Voice voice = Voice.GOOGLE_EN_US_STANDARD_H;
+
+              Voice voice = Voice.GOOGLE_EN_GB_STANDARD_D;
+              switch (voiceType) {
+                case ROYAL_ADVISOR:
+                  voice = Voice.GOOGLE_EN_GB_STANDARD_B;
+                  break;
+                case HEAD_OF_SECURITY:
+                  voice = Voice.GOOGLE_EN_GB_STANDARD_D;
+                  break;
+                case FOREIGN_AMBASSADOR:
+                  voice = Voice.GOOGLE_EN_AU_STANDARD_B;
+                  break;
+                case NARRORATOR:
+                  voice = Voice.GOOGLE_EN_GB_STANDARD_F;
+                  break;
+              }
 
               TextToSpeechRequest ttsRequest = new TextToSpeechRequest(config);
               ttsRequest.setText(text).setProvider(provider).setVoice(voice);

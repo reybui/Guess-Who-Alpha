@@ -5,6 +5,7 @@ import javafx.scene.input.MouseEvent;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.speech.TextToSpeech;
+import nz.ac.auckland.se206.speech.VoiceTypes.VoiceType;
 
 /**
  * The GameStarted state of the game. Handles the initial interactions when the game starts,
@@ -56,10 +57,11 @@ public class GameStarted implements GameState {
   @Override
   public void handleGuessClick() throws IOException {
     if (hasInteracted) {
-      TextToSpeech.speak("Make a guess, click on the thief!");
+      TextToSpeech.speak("Make a guess, click on the thief!", VoiceType.NARRORATOR);
       context.setState(context.getGuessingState());
     } else {
-      TextToSpeech.speak("You must interact with at least one suspect to be able to guess");
+      TextToSpeech.speak(
+          "You must interact with at least one suspect to be able to guess", VoiceType.NARRORATOR);
     }
   }
 }

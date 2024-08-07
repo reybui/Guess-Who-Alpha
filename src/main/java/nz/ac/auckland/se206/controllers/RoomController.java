@@ -10,6 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.speech.TextToSpeech;
+import nz.ac.auckland.se206.speech.VoiceTypes.VoiceType;
 
 /**
  * Controller class for the room view. Handles user interactions within the room where the user can
@@ -36,8 +37,7 @@ public class RoomController {
   public void initialize() {
     if (isFirstTimeInit) {
       TextToSpeech.speak(
-          "Interrogate the three suspects, and guess who is the thief"
-          /*+ context.getProfessionToGuess()*/ );
+          "Interrogate the three suspects, and guess who is the thief", VoiceType.NARRORATOR);
       isFirstTimeInit = false;
     }
     // lblTime.setText(context.getProfessionToGuess());

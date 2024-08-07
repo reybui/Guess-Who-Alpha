@@ -17,6 +17,7 @@ import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 import nz.ac.auckland.se206.speech.TextToSpeech;
+import nz.ac.auckland.se206.speech.VoiceTypes.VoiceType;
 
 /**
  * Controller class for the chat view. Handles user interactions and communication with the GPT
@@ -30,6 +31,7 @@ public class ChatController {
 
   private ChatCompletionRequest chatCompletionRequest;
   private String role;
+  private VoiceType voiceType;
 
   /**
    * Initializes the chat view.
@@ -39,6 +41,20 @@ public class ChatController {
   @FXML
   public void initialize() throws ApiProxyException {
     // Any required initialization code can be placed here
+  }
+
+  public void setVoiceType(String role) {
+    switch (role) {
+      case "royal_advisor":
+        this.voiceType = VoiceType.ROYAL_ADVISOR;
+        break;
+      case "head_of_security":
+        this.voiceType = VoiceType.HEAD_OF_SECURITY;
+        break;
+      case "foreign_ambassador":
+        this.voiceType = VoiceType.FOREIGN_AMBASSADOR;
+        break;
+    }
   }
 
   /**
@@ -59,6 +75,8 @@ public class ChatController {
    */
   public void setRole(String role) {
     this.role = role;
+    setVoiceType(role);
+
     try {
       ApiProxyConfig config = ApiProxyConfig.readConfig();
       chatCompletionRequest =
@@ -96,7 +114,7 @@ public class ChatController {
       Choice result = chatCompletionResult.getChoices().iterator().next();
       chatCompletionRequest.addMessage(result.getChatMessage());
       appendChatMessage(result.getChatMessage());
-      TextToSpeech.speak(result.getChatMessage().getContent());
+      TextToSpeech.speak(result.getChatMessage().getContent(), voiceType);
       return result.getChatMessage();
     } catch (ApiProxyException e) {
       e.printStackTrace();

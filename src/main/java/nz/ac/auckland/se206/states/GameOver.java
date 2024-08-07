@@ -4,6 +4,7 @@ import java.io.IOException;
 import javafx.scene.input.MouseEvent;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.speech.TextToSpeech;
+import nz.ac.auckland.se206.speech.VoiceTypes.VoiceType;
 
 /**
  * The GameOver state of the game. Handles interactions after the game has ended, informing the
@@ -37,9 +38,11 @@ public class GameOver implements GameState {
     }
     String clickedProfession = context.getSuspectName(rectangleId);
     if (clickedProfession.equals(context.getSuspectToGuess())) {
-      TextToSpeech.speak("Game Over, you have already guessed! This is the thief");
+      TextToSpeech.speak(
+          "Game Over, you have already guessed! This is the thief", VoiceType.NARRORATOR);
     } else {
-      TextToSpeech.speak("Game Over, you have already guessed! This is not the thief");
+      TextToSpeech.speak(
+          "Game Over, you have already guessed! This is not the thief", VoiceType.NARRORATOR);
     }
   }
 
@@ -51,6 +54,6 @@ public class GameOver implements GameState {
    */
   @Override
   public void handleGuessClick() throws IOException {
-    TextToSpeech.speak("You have already guessed!");
+    TextToSpeech.speak("You have already guessed!", VoiceType.NARRORATOR);
   }
 }

@@ -34,9 +34,9 @@ public class GameStateContext {
     rectIdToGuess = "rectAdvisor";
 
     rectanglesToSuspect = new HashMap<>();
-    rectanglesToSuspect.put("rectForeign", "Foreign President");
-    rectanglesToSuspect.put("rectGuard", "Chief of security");
-    rectanglesToSuspect.put("rectAdvisor", "Kings personal advisor");
+    rectanglesToSuspect.put("rectForeign", "foreign_ambassador");
+    rectanglesToSuspect.put("rectGuard", "head_of_security");
+    rectanglesToSuspect.put("rectAdvisor", "royal_advisor");
 
     suspectToGuess = rectanglesToSuspect.get(rectIdToGuess);
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import javafx.scene.input.MouseEvent;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.speech.TextToSpeech;
+import nz.ac.auckland.se206.speech.VoiceTypes.VoiceType;
 
 /**
  * The Guessing state of the game. Handles the logic for when the player is making a guess about the
@@ -33,7 +34,7 @@ public class Guessing implements GameState {
   @Override
   public void handleRectangleClick(MouseEvent event, String rectangleId) throws IOException {
     if (rectangleId.equals("rectCashier") || rectangleId.equals("rectWaitress")) {
-      TextToSpeech.speak("You should click on the customers");
+      TextToSpeech.speak("You should click on the customers", VoiceType.NARRORATOR);
       return;
     }
 
@@ -41,9 +42,9 @@ public class Guessing implements GameState {
     String thief = context.getSuspectToGuess();
     // String clickedSuspect = context.getSuspect(rectangleId);
     if (rectangleId.equals(thiefId)) {
-      TextToSpeech.speak("Correct! You won! This is the thief");
+      TextToSpeech.speak("Correct! You won! This is the thief", VoiceType.NARRORATOR);
     } else {
-      TextToSpeech.speak("You lost! The thief is " + thief);
+      TextToSpeech.speak("You lost! The thief is " + thief, VoiceType.NARRORATOR);
     }
     context.setState(context.getGameOverState());
   }
@@ -56,6 +57,6 @@ public class Guessing implements GameState {
    */
   @Override
   public void handleGuessClick() throws IOException {
-    TextToSpeech.speak("You have already guessed!");
+    TextToSpeech.speak("You have already guessed!", VoiceType.NARRORATOR);
   }
 }
