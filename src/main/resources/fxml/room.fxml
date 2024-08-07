@@ -17,12 +17,13 @@
       </ImageView>
       <Rectangle fx:id="rectAdvisor" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="213.0" layoutX="552.0" layoutY="149.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="58.0" />
       <Rectangle fx:id="rectGuard" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="135.0" layoutX="107.0" layoutY="188.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="46.0" />
-      <Rectangle fx:id="rectForeign" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="194.0" layoutX="178.0" layoutY="138.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="46.0" />
-      <Label fx:id="lblTime" layoutX="642.0" layoutY="548.0" prefHeight="37.0" prefWidth="139.0" text="timer" wrapText="true">
+      <Rectangle fx:id="rectForeign" arcHeight="5.0" arcWidth="5.0" fill="WHITE" focusTraversable="true" height="219.0" layoutX="178.0" layoutY="138.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="46.0" />
+      <Label fx:id="lblTime" layoutX="650.0" layoutY="451.0" prefHeight="37.0" prefWidth="139.0" text="timer" wrapText="true">
          <font>
             <Font size="21.0" />
          </font>
       </Label>
       <Button fx:id="btnGuess" layoutX="329.0" layoutY="481.0" mnemonicParsing="false" onAction="#handleGuessClick" prefHeight="51.0" prefWidth="132.0" text="Make a Guess" />
+      <Rectangle fx:id="rectLetter" arcHeight="5.0" arcWidth="5.0" fill="WHITE" focusTraversable="true" height="28.0" layoutX="454.0" layoutY="423.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="46.0" />
    </children>
 </Pane>
