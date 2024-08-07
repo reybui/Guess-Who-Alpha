@@ -39,12 +39,12 @@ public class Guessing implements GameState {
     }
 
     String thiefId = context.getRectIdToGuess();
-    String thief = context.getSuspectToGuess();
+    // String thief = context.getSuspectToGuess();
     // String clickedSuspect = context.getSuspect(rectangleId);
     if (rectangleId.equals(thiefId)) {
       TextToSpeech.speak("Correct! You won! This is the thief", VoiceType.NARRORATOR);
     } else {
-      TextToSpeech.speak("You lost! The thief is " + thief, VoiceType.NARRORATOR);
+      TextToSpeech.speak("You lost! The thief lives to steal another day", VoiceType.NARRORATOR);
     }
     context.setState(context.getGameOverState());
   }

@@ -20,9 +20,8 @@ public class RoomController {
 
   @FXML private Rectangle rectForeign;
   @FXML private Rectangle rectAdvisor;
-  // @FXML private Rectangle rectPerson2;
+  @FXML private Rectangle rectLetter;
   @FXML private Rectangle rectGuard;
-  // @FXML private Rectangle rectWaitress;
   @FXML private Label lblTime;
   @FXML private Button btnGuess;
 

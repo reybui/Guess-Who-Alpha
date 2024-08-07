@@ -83,4 +83,16 @@ public class App extends Application {
     stage.show();
     root.requestFocus();
   }
+
+  public static void openLetter(MouseEvent event) throws IOException {
+    FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/letter.fxml"));
+    Parent root = loader.load();
+
+    // LetterController letterController = loader.getController();
+
+    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    scene = new Scene(root);
+    stage.setScene(scene);
+    stage.show();
+  }
 }
