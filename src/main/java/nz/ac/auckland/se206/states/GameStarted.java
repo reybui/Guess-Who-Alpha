@@ -59,7 +59,7 @@ public class GameStarted implements GameState {
       TextToSpeech.speak("Make a guess, click on the thief!");
       context.setState(context.getGuessingState());
     } else {
-      TextToSpeech.speak("You must interact with at least one suspect");
+      TextToSpeech.speak("You must interact with at least one suspect to be able to guess");
     }
   }
 }

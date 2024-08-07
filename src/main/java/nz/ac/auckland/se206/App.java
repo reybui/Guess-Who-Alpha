@@ -53,15 +53,15 @@ public class App extends Application {
    * Opens the chat view and sets the profession in the chat controller.
    *
    * @param event the mouse event that triggered the method
-   * @param profession the profession to set in the chat controller
+   * @param role the profession to set in the chat controller
    * @throws IOException if the FXML file is not found
    */
-  public static void openChat(MouseEvent event, String profession) throws IOException {
+  public static void openChat(MouseEvent event, String role) throws IOException {
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/chat.fxml"));
     Parent root = loader.load();
 
     ChatController chatController = loader.getController();
-    chatController.setProfession(profession);
+    chatController.setRole(role);
 
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     scene = new Scene(root);

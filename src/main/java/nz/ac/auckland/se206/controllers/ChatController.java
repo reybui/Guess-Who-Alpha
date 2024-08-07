@@ -29,7 +29,7 @@ public class ChatController {
   @FXML private Button btnSend;
 
   private ChatCompletionRequest chatCompletionRequest;
-  private String profession;
+  private String role;
 
   /**
    * Initializes the chat view.
@@ -48,17 +48,17 @@ public class ChatController {
    */
   private String getSystemPrompt() {
     Map<String, String> map = new HashMap<>();
-    map.put("profession", profession);
+    map.put("role", role);
     return PromptEngineering.getPrompt("chat.txt", map);
   }
 
   /**
-   * Sets the profession for the chat context and initializes the ChatCompletionRequest.
+   * Sets the role for the chat context and initializes the ChatCompletionRequest.
    *
-   * @param profession the profession to set
+   * @param role the role to set
    */
-  public void setProfession(String profession) {
-    this.profession = profession;
+  public void setRole(String role) {
+    this.role = role;
     try {
       ApiProxyConfig config = ApiProxyConfig.readConfig();
       chatCompletionRequest =
