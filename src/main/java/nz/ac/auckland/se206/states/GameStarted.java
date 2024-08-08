@@ -4,6 +4,7 @@ import java.io.IOException;
 import javafx.scene.input.MouseEvent;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
+import nz.ac.auckland.se206.controllers.RoomController;
 import nz.ac.auckland.se206.speech.TextToSpeech;
 import nz.ac.auckland.se206.speech.VoiceTypes.VoiceType;
 
@@ -57,7 +58,9 @@ public class GameStarted implements GameState {
     if (hasInteractedPerson && hasInteractedObject) {
       TextToSpeech.speak("Make a guess, click on the thief!", VoiceType.NARRORATOR);
       context.setState(context.getGuessingState());
-
+      RoomController roomController = (RoomController) App.getController();
+      roomController.disableGuessButton();
+      roomController.guessClicked();
     } else {
       TextToSpeech.speak(
           "You must interact with at least one suspect and one object, to be able to guess",

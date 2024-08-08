@@ -59,16 +59,16 @@ public class RoomController {
     lblTime.setText(String.format("%02d:%02d", minutes, seconds));
   }
 
-  private void handleTimerFinish() {
+  public void handleTimerFinish() {
     // Handle what happens when the timer finishes
-    TextToSpeech.speak("Time's up!", VoiceType.NARRORATOR);
-
     if (context.getState() instanceof Guessing) {
       context.setState(context.getGameOverState());
       TextToSpeech.speak("No guess was made, you lost!", VoiceType.NARRORATOR);
     } else {
+      TextToSpeech.speak("Time's up! Make a guess on who the suspect is", VoiceType.NARRORATOR);
       context.setState(context.getGuessingState());
       countdownTimer.resetToGuessingTime();
+      btnGuess.disableProperty().setValue(true);
     }
   }
 
@@ -113,11 +113,10 @@ public class RoomController {
   @FXML
   private void handleGuessClick(ActionEvent event) throws IOException {
     context.handleGuessClick();
-    if (!guessClicked) {
+    if (guessClicked) {
       countdownTimer.setGuessingState(true);
       countdownTimer.resetToGuessingTime();
     }
-    guessClicked = true;
   }
 
   @FXML
@@ -128,5 +127,13 @@ public class RoomController {
   @FXML
   private void handleMouseExit(MouseEvent event) {
     ((Rectangle) event.getSource()).setCursor(Cursor.DEFAULT);
+  }
+
+  public void disableGuessButton() {
+    btnGuess.disableProperty().setValue(true);
+  }
+
+  public void guessClicked() {
+    guessClicked = true;
   }
 }

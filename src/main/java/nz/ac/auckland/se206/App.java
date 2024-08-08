@@ -17,6 +17,7 @@ import nz.ac.auckland.se206.controllers.ChatController;
 public class App extends Application {
 
   private static Scene scene;
+  private static Object currentController;
 
   /**
    * The main method that launches the JavaFX application.
@@ -34,7 +35,20 @@ public class App extends Application {
    * @throws IOException if the FXML file is not found
    */
   public static void setRoot(String fxml) throws IOException {
-    scene.setRoot(loadFxml(fxml));
+    // scene.setRoot(loadFxml(fxml));
+    FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/" + fxml + ".fxml"));
+    Parent root = loader.load();
+    scene.setRoot(root);
+    currentController = loader.getController();
+  }
+
+  /**
+   * Returns the controller of the current scene.
+   *
+   * @return the controller of the current scene
+   */
+  public static Object getController() {
+    return currentController;
   }
 
   /**

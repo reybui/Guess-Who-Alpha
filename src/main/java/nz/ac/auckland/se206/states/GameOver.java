@@ -33,9 +33,6 @@ public class GameOver implements GameState {
    */
   @Override
   public void handleRectangleClick(MouseEvent event, String rectangleId) throws IOException {
-    if (rectangleId.equals("rectCashier") || rectangleId.equals("rectWaitress")) {
-      return;
-    }
     String clickedProfession = context.getSuspectName(rectangleId);
     if (clickedProfession.equals(context.getSuspectToGuess())) {
       TextToSpeech.speak(

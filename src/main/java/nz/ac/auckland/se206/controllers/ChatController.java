@@ -48,7 +48,18 @@ public class ChatController {
   @FXML
   public void initialize() throws ApiProxyException {
     countdownTimer.setOnTick(() -> Platform.runLater(this::updateTimerLabel));
-    countdownTimer.setOnFinish(() -> Platform.runLater(this::handleTimerFinish));
+    countdownTimer.setOnFinish(
+        () ->
+            Platform.runLater(
+                () -> {
+                  try {
+                    handleTimerFinish();
+                  } catch (ApiProxyException e) {
+                    e.printStackTrace();
+                  } catch (IOException e) {
+                    e.printStackTrace();
+                  }
+                }));
     updateTimerLabel();
   }
 
@@ -59,8 +70,10 @@ public class ChatController {
     lblTime.setText(String.format("%02d:%02d", minutes, seconds));
   }
 
-  private void handleTimerFinish() {
-    // Handle what happens when the timer finishes
+  private void handleTimerFinish() throws ApiProxyException, IOException {
+    App.setRoot("room");
+    RoomController roomController = (RoomController) App.getController();
+    roomController.handleTimerFinish();
   }
 
   public void setVoiceType(String role) {
