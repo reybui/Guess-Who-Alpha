@@ -88,6 +88,29 @@ public class ChatController {
     return PromptEngineering.getPrompt("chat.txt", map);
   }
 
+  // /**
+  //  * Sets the role for the chat context and initializes the ChatCompletionRequest.
+  //  *
+  //  * @param role the role to set
+  //  */
+  // public void setRole(String role) {
+  //   this.role = role;
+  //   setVoiceType(role);
+
+  //   try {
+  //     ApiProxyConfig config = ApiProxyConfig.readConfig();
+  //     chatCompletionRequest =
+  //         new ChatCompletionRequest(config)
+  //             .setN(1)
+  //             .setTemperature(0.4)
+  //             .setTopP(0.5)
+  //             .setMaxTokens(100);
+  //     runGpt(new ChatMessage("system", getSystemPrompt()));
+  //   } catch (ApiProxyException e) {
+  //     e.printStackTrace();
+  //   }
+  // }
+
   /**
    * Sets the role for the chat context and initializes the ChatCompletionRequest.
    *
@@ -97,18 +120,33 @@ public class ChatController {
     this.role = role;
     setVoiceType(role);
 
-    try {
-      ApiProxyConfig config = ApiProxyConfig.readConfig();
-      chatCompletionRequest =
-          new ChatCompletionRequest(config)
-              .setN(1)
-              .setTemperature(0.4)
-              .setTopP(0.5)
-              .setMaxTokens(100);
-      runGptAsync(new ChatMessage("system", getSystemPrompt()));
-    } catch (ApiProxyException e) {
-      e.printStackTrace();
-    }
+    Task<Void> task =
+        new Task<Void>() {
+          @Override
+          protected Void call() throws Exception {
+            try {
+              ApiProxyConfig config = ApiProxyConfig.readConfig();
+              chatCompletionRequest =
+                  new ChatCompletionRequest(config)
+                      .setN(1)
+                      .setTemperature(0.4)
+                      .setTopP(0.5)
+                      .setMaxTokens(100);
+              runGpt(new ChatMessage("system", getSystemPrompt()));
+            } catch (ApiProxyException e) {
+              e.printStackTrace();
+            }
+            return null;
+          }
+        };
+
+    task.setOnFailed(
+        event -> {
+          Throwable exception = task.getException();
+          Platform.runLater(() -> exception.printStackTrace());
+        });
+
+    new Thread(task).start();
   }
 
   /**
@@ -127,48 +165,34 @@ public class ChatController {
    * @return the response chat message
    * @throws ApiProxyException if there is an error communicating with the API proxy
    */
-  private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
-    chatCompletionRequest.addMessage(msg);
-    try {
-      ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
-      Choice result = chatCompletionResult.getChoices().iterator().next();
-      chatCompletionRequest.addMessage(result.getChatMessage());
-      appendChatMessage(result.getChatMessage());
-      TextToSpeech.speak(result.getChatMessage().getContent(), voiceType);
-      return result.getChatMessage();
-    } catch (ApiProxyException e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
-
-  /**
-   * Runs the GPT model with a given chat message asynchronously.
-   *
-   * @param msg the chat message to process
-   */
-  private void runGptAsync(ChatMessage msg) {
+  private void runGpt(ChatMessage msg) {
     Task<ChatMessage> task =
         new Task<ChatMessage>() {
           @Override
           protected ChatMessage call() throws ApiProxyException {
-            return runGpt(msg);
-          }
-
-          @Override
-          protected void succeeded() {
-            ChatMessage response = getValue();
-            if (response != null) {
-              Platform.runLater(() -> appendChatMessage(response));
-              TextToSpeech.speak(response.getContent(), voiceType);
-            }
-          }
-
-          @Override
-          protected void failed() {
-            getException().printStackTrace();
+            chatCompletionRequest.addMessage(msg);
+            ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
+            Choice result = chatCompletionResult.getChoices().iterator().next();
+            chatCompletionRequest.addMessage(result.getChatMessage());
+            return result.getChatMessage();
           }
         };
+
+    task.setOnSucceeded(
+        event -> {
+          ChatMessage responseMsg = task.getValue();
+          Platform.runLater(
+              () -> {
+                appendChatMessage(responseMsg);
+                TextToSpeech.speak(responseMsg.getContent(), voiceType);
+              });
+        });
+
+    task.setOnFailed(
+        event -> {
+          Throwable exception = task.getException();
+          exception.printStackTrace();
+        });
 
     new Thread(task).start();
   }
@@ -189,7 +213,7 @@ public class ChatController {
     txtInput.clear();
     ChatMessage msg = new ChatMessage("user", message);
     appendChatMessage(msg);
-    runGptAsync(msg);
+    runGpt(msg);
   }
 
   /**
