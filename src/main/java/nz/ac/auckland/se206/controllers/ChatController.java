@@ -88,29 +88,6 @@ public class ChatController {
     return PromptEngineering.getPrompt("chat.txt", map);
   }
 
-  // /**
-  //  * Sets the role for the chat context and initializes the ChatCompletionRequest.
-  //  *
-  //  * @param role the role to set
-  //  */
-  // public void setRole(String role) {
-  //   this.role = role;
-  //   setVoiceType(role);
-
-  //   try {
-  //     ApiProxyConfig config = ApiProxyConfig.readConfig();
-  //     chatCompletionRequest =
-  //         new ChatCompletionRequest(config)
-  //             .setN(1)
-  //             .setTemperature(0.4)
-  //             .setTopP(0.5)
-  //             .setMaxTokens(100);
-  //     runGpt(new ChatMessage("system", getSystemPrompt()));
-  //   } catch (ApiProxyException e) {
-  //     e.printStackTrace();
-  //   }
-  // }
-
   /**
    * Sets the role for the chat context and initializes the ChatCompletionRequest.
    *
@@ -154,8 +131,8 @@ public class ChatController {
    *
    * @param msg the chat message to append
    */
-  private void appendChatMessage(ChatMessage msg) {
-    txtaChat.appendText(this.role + ": " + msg.getContent() + "\n\n");
+  private void appendChatMessage(ChatMessage msg, String senderRole) {
+    txtaChat.appendText(senderRole + ": " + msg.getContent() + "\n\n");
   }
 
   /**
@@ -183,7 +160,7 @@ public class ChatController {
           ChatMessage responseMsg = task.getValue();
           Platform.runLater(
               () -> {
-                appendChatMessage(responseMsg);
+                appendChatMessage(responseMsg, this.role);
                 TextToSpeech.speak(responseMsg.getContent(), voiceType);
               });
         });
@@ -212,7 +189,7 @@ public class ChatController {
     }
     txtInput.clear();
     ChatMessage msg = new ChatMessage("user", message);
-    appendChatMessage(msg);
+    appendChatMessage(msg, "Detective");
     runGpt(msg);
   }
 
