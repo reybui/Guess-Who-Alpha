@@ -4,6 +4,7 @@ import java.io.IOException;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
@@ -116,5 +117,15 @@ public class RoomController {
       countdownTimer.resetToGuessingTime();
     }
     guessClicked = true;
+  }
+
+  @FXML
+  private void handleMouseEnter(MouseEvent event) {
+    ((Rectangle) event.getSource()).setCursor(Cursor.HAND);
+  }
+
+  @FXML
+  private void handleMouseExit(MouseEvent event) {
+    ((Rectangle) event.getSource()).setCursor(Cursor.DEFAULT);
   }
 }
