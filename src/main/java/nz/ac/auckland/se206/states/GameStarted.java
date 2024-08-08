@@ -57,6 +57,7 @@ public class GameStarted implements GameState {
     if (hasInteractedPerson && hasInteractedObject) {
       TextToSpeech.speak("Make a guess, click on the thief!", VoiceType.NARRORATOR);
       context.setState(context.getGuessingState());
+
     } else {
       TextToSpeech.speak(
           "You must interact with at least one suspect and one object, to be able to guess",

@@ -31,6 +31,7 @@ public class RoomController {
   private static boolean isFirstTimeInit = true;
   private static GameStateContext context = new GameStateContext();
   private static CountdownTimer countdownTimer = new CountdownTimer();
+  private boolean guessClicked = false;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -110,7 +111,10 @@ public class RoomController {
   @FXML
   private void handleGuessClick(ActionEvent event) throws IOException {
     context.handleGuessClick();
+    if (!guessClicked) {
+      countdownTimer.setGuessingState(true);
+      countdownTimer.resetToGuessingTime();
+    }
+    guessClicked = true;
   }
-
-  private void startGuessTimer() {}
 }
