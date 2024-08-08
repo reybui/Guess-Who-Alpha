@@ -1,16 +1,36 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
+import nz.ac.auckland.se206.CountdownTimer;
 
 public class LetterController {
 
+  @FXML Label lblTime;
+
+  private CountdownTimer countdownTimer = CountdownTimer.getInstance();
+
   @FXML
   public void initialize() {
-    // Any required initialization code can be placed here
+    countdownTimer.setOnTick(() -> Platform.runLater(this::updateTimerLabel));
+    countdownTimer.setOnFinish(() -> Platform.runLater(this::handleTimerFinish));
+    updateTimerLabel();
+  }
+
+  private void updateTimerLabel() {
+    int remainingTime = countdownTimer.getRemainingTime();
+    int minutes = remainingTime / 60;
+    int seconds = remainingTime % 60;
+    lblTime.setText(String.format("%02d:%02d", minutes, seconds));
+  }
+
+  private void handleTimerFinish() {
+    // Handle what happens when the timer finishes
   }
 
   /**

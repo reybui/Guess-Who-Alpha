@@ -31,8 +31,9 @@ public class RoomController {
 
   private static boolean isFirstTimeInit = true;
   private static GameStateContext context = new GameStateContext();
-  private static CountdownTimer countdownTimer = new CountdownTimer();
   private boolean guessClicked = false;
+
+  private CountdownTimer countdownTimer = CountdownTimer.getInstance();
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -46,8 +47,8 @@ public class RoomController {
       isFirstTimeInit = false;
       countdownTimer.start();
     }
-    countdownTimer.setOnTick(() -> Platform.runLater(() -> updateTimerLabel()));
-    countdownTimer.setOnFinish(() -> Platform.runLater(() -> handleTimerFinish()));
+    countdownTimer.setOnTick(() -> Platform.runLater(this::updateTimerLabel));
+    countdownTimer.setOnFinish(() -> Platform.runLater(this::handleTimerFinish));
     updateTimerLabel();
   }
 

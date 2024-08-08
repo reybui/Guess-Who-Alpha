@@ -3,9 +3,12 @@ package nz.ac.auckland.se206.controllers;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
@@ -15,6 +18,7 @@ import nz.ac.auckland.apiproxy.chat.openai.Choice;
 import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
+import nz.ac.auckland.se206.CountdownTimer;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 import nz.ac.auckland.se206.speech.TextToSpeech;
 import nz.ac.auckland.se206.speech.VoiceTypes.VoiceType;
@@ -28,10 +32,13 @@ public class ChatController {
   @FXML private TextArea txtaChat;
   @FXML private TextField txtInput;
   @FXML private Button btnSend;
+  @FXML private Label lblTime;
 
   private ChatCompletionRequest chatCompletionRequest;
   private String role;
   private VoiceType voiceType;
+
+  private CountdownTimer countdownTimer = CountdownTimer.getInstance();
 
   /**
    * Initializes the chat view.
@@ -40,18 +47,31 @@ public class ChatController {
    */
   @FXML
   public void initialize() throws ApiProxyException {
-    // Any required initialization code can be placed here
+    countdownTimer.setOnTick(() -> Platform.runLater(this::updateTimerLabel));
+    countdownTimer.setOnFinish(() -> Platform.runLater(this::handleTimerFinish));
+    updateTimerLabel();
+  }
+
+  private void updateTimerLabel() {
+    int remainingTime = countdownTimer.getRemainingTime();
+    int minutes = remainingTime / 60;
+    int seconds = remainingTime % 60;
+    lblTime.setText(String.format("%02d:%02d", minutes, seconds));
+  }
+
+  private void handleTimerFinish() {
+    // Handle what happens when the timer finishes
   }
 
   public void setVoiceType(String role) {
     switch (role) {
-      case "royal_advisor":
+      case "Royal Advisor":
         this.voiceType = VoiceType.ROYAL_ADVISOR;
         break;
-      case "head_of_security":
+      case "Head of Security":
         this.voiceType = VoiceType.HEAD_OF_SECURITY;
         break;
-      case "foreign_ambassador":
+      case "Foreign Ambassador":
         this.voiceType = VoiceType.FOREIGN_AMBASSADOR;
         break;
     }
@@ -82,10 +102,10 @@ public class ChatController {
       chatCompletionRequest =
           new ChatCompletionRequest(config)
               .setN(1)
-              .setTemperature(0.2)
+              .setTemperature(0.4)
               .setTopP(0.5)
               .setMaxTokens(100);
-      runGpt(new ChatMessage("system", getSystemPrompt()));
+      runGptAsync(new ChatMessage("system", getSystemPrompt()));
     } catch (ApiProxyException e) {
       e.printStackTrace();
     }
@@ -97,7 +117,7 @@ public class ChatController {
    * @param msg the chat message to append
    */
   private void appendChatMessage(ChatMessage msg) {
-    txtaChat.appendText(msg.getRole() + ": " + msg.getContent() + "\n\n");
+    txtaChat.appendText(this.role + ": " + msg.getContent() + "\n\n");
   }
 
   /**
@@ -123,6 +143,37 @@ public class ChatController {
   }
 
   /**
+   * Runs the GPT model with a given chat message asynchronously.
+   *
+   * @param msg the chat message to process
+   */
+  private void runGptAsync(ChatMessage msg) {
+    Task<ChatMessage> task =
+        new Task<ChatMessage>() {
+          @Override
+          protected ChatMessage call() throws ApiProxyException {
+            return runGpt(msg);
+          }
+
+          @Override
+          protected void succeeded() {
+            ChatMessage response = getValue();
+            if (response != null) {
+              Platform.runLater(() -> appendChatMessage(response));
+              TextToSpeech.speak(response.getContent(), voiceType);
+            }
+          }
+
+          @Override
+          protected void failed() {
+            getException().printStackTrace();
+          }
+        };
+
+    new Thread(task).start();
+  }
+
+  /**
    * Sends a message to the GPT model.
    *
    * @param event the action event triggered by the send button
@@ -138,7 +189,7 @@ public class ChatController {
     txtInput.clear();
     ChatMessage msg = new ChatMessage("user", message);
     appendChatMessage(msg);
-    runGpt(msg);
+    runGptAsync(msg);
   }
 
   /**

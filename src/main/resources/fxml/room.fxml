@@ -16,7 +16,7 @@
          </image>
       </ImageView>
       <Rectangle fx:id="rectAdvisor" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="213.0" layoutX="552.0" layoutY="149.0" onMouseClicked="#handleRectangleClick" onMouseEntered="#handleMouseEnter" onMouseExited="#handleMouseExit" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="58.0" />
-      <Rectangle fx:id="rectGuard" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="135.0" layoutX="107.0" layoutY="188.0" onMouseClicked="#handleRectangleClick" onMouseEntered="#handleMouseEnter" onMouseExited="#handleMouseExit" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="46.0" />
+      <Rectangle fx:id="rectGuard" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="141.0" layoutX="107.0" layoutY="182.0" onMouseClicked="#handleRectangleClick" onMouseEntered="#handleMouseEnter" onMouseExited="#handleMouseExit" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="46.0" />
       <Rectangle fx:id="rectForeign" arcHeight="5.0" arcWidth="5.0" fill="WHITE" focusTraversable="true" height="219.0" layoutX="178.0" layoutY="138.0" onMouseClicked="#handleRectangleClick" onMouseEntered="#handleMouseEnter" onMouseExited="#handleMouseExit" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="46.0" />
       <Label fx:id="lblTime" layoutX="624.0" layoutY="488.0" prefHeight="37.0" prefWidth="139.0" textFill="WHITE" wrapText="true">
          <font>
