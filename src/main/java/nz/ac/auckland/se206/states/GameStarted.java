@@ -59,7 +59,7 @@ public class GameStarted implements GameState {
       TextToSpeech.speak("Make a guess, click on the thief!", VoiceType.NARRORATOR);
       context.setState(context.getGuessingState());
       RoomController roomController = (RoomController) App.getController();
-      roomController.disableGuessButton();
+      roomController.disableFeatures();
       roomController.guessClicked();
     } else {
       TextToSpeech.speak(

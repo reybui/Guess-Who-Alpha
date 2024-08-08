@@ -129,8 +129,9 @@ public class RoomController {
     ((Rectangle) event.getSource()).setCursor(Cursor.DEFAULT);
   }
 
-  public void disableGuessButton() {
+  public void disableFeatures() {
     btnGuess.disableProperty().setValue(true);
+    rectLetter.setDisable(true);
   }
 
   public void guessClicked() {
