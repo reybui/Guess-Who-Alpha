@@ -2,7 +2,9 @@ package nz.ac.auckland.se206.states;
 
 import java.io.IOException;
 import javafx.scene.input.MouseEvent;
+import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
+import nz.ac.auckland.se206.controllers.RoomController;
 import nz.ac.auckland.se206.speech.TextToSpeech;
 import nz.ac.auckland.se206.speech.VoiceTypes.VoiceType;
 
@@ -40,6 +42,8 @@ public class Guessing implements GameState {
       TextToSpeech.speak("You lost! The thief lives to steal another day", VoiceType.NARRORATOR);
     }
     context.setState(context.getGameOverState());
+    RoomController roomController = (RoomController) App.getController();
+    roomController.disableTimer();
   }
 
   /**

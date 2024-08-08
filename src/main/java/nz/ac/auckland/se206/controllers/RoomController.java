@@ -137,4 +137,8 @@ public class RoomController {
   public void guessClicked() {
     guessClicked = true;
   }
+
+  public void disableTimer() {
+    lblTime.setVisible(false);
+  }
 }
