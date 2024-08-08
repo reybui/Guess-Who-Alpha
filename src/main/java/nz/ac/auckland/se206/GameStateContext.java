@@ -84,6 +84,10 @@ public class GameStateContext {
     this.gameState = state;
   }
 
+  public GameState getState() {
+    return this.gameState;
+  }
+
   /**
    * Gets the initial game started state.
    *

@@ -76,6 +76,7 @@ public class TextToSpeech {
 
     Thread backgroundThread = new Thread(backgroundTask);
     backgroundThread.setDaemon(true); // Ensure the thread does not prevent JVM shutdown
-    backgroundThread.start();
+    // backgroundThread.start();
+    System.out.println("Text to speech: " + text);
   }
 }

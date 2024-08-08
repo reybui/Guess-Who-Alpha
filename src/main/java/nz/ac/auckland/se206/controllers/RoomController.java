@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -8,9 +9,11 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+import nz.ac.auckland.se206.CountdownTimer;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.speech.TextToSpeech;
 import nz.ac.auckland.se206.speech.VoiceTypes.VoiceType;
+import nz.ac.auckland.se206.states.Guessing;
 
 /**
  * Controller class for the room view. Handles user interactions within the room where the user can
@@ -27,6 +30,7 @@ public class RoomController {
 
   private static boolean isFirstTimeInit = true;
   private static GameStateContext context = new GameStateContext();
+  private static CountdownTimer countdownTimer = new CountdownTimer();
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -38,8 +42,31 @@ public class RoomController {
       TextToSpeech.speak(
           "Interrogate the three suspects, and guess who is the thief", VoiceType.NARRORATOR);
       isFirstTimeInit = false;
+      countdownTimer.start();
     }
-    // lblTime.setText(context.getProfessionToGuess());
+    countdownTimer.setOnTick(() -> Platform.runLater(() -> updateTimerLabel()));
+    countdownTimer.setOnFinish(() -> Platform.runLater(() -> handleTimerFinish()));
+    updateTimerLabel();
+  }
+
+  private void updateTimerLabel() {
+    int remainingTime = countdownTimer.getRemainingTime();
+    int minutes = remainingTime / 60;
+    int seconds = remainingTime % 60;
+    lblTime.setText(String.format("%02d:%02d", minutes, seconds));
+  }
+
+  private void handleTimerFinish() {
+    // Handle what happens when the timer finishes
+    TextToSpeech.speak("Time's up!", VoiceType.NARRORATOR);
+
+    if (context.getState() instanceof Guessing) {
+      context.setState(context.getGameOverState());
+      TextToSpeech.speak("No guess was made, you lost!", VoiceType.NARRORATOR);
+    } else {
+      context.setState(context.getGuessingState());
+      countdownTimer.resetToGuessingTime();
+    }
   }
 
   /**
@@ -84,4 +111,6 @@ public class RoomController {
   private void handleGuessClick(ActionEvent event) throws IOException {
     context.handleGuessClick();
   }
+
+  private void startGuessTimer() {}
 }
