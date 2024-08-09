@@ -10,6 +10,13 @@ public class CountdownTimer {
 
   private static CountdownTimer instance;
 
+  public static CountdownTimer getInstance() {
+    if (instance == null) {
+      instance = new CountdownTimer();
+    }
+    return instance;
+  }
+
   private int remainingTime;
   private ScheduledExecutorService scheduler;
   private Runnable onTick;
@@ -19,13 +26,6 @@ public class CountdownTimer {
   public CountdownTimer() {
     remainingTime = INITIAL_TIME;
     scheduler = Executors.newScheduledThreadPool(1);
-  }
-
-  public static CountdownTimer getInstance() {
-    if (instance == null) {
-      instance = new CountdownTimer();
-    }
-    return instance;
   }
 
   public void start() {

@@ -23,6 +23,9 @@ import nz.ac.auckland.se206.states.Guessing;
  */
 public class RoomController {
 
+  private static boolean isFirstTimeInit = true;
+  private static GameStateContext context = new GameStateContext();
+
   @FXML private Rectangle rectForeign;
   @FXML private Rectangle rectAdvisor;
   @FXML private Rectangle rectLetter;
@@ -30,9 +33,6 @@ public class RoomController {
   @FXML private Label lblTime;
   @FXML private Button btnGuess;
   @FXML private Label lblGameOver;
-
-  private static boolean isFirstTimeInit = true;
-  private static GameStateContext context = new GameStateContext();
 
   private boolean guessClicked = false;
   private CountdownTimer countdownTimer = CountdownTimer.getInstance();
