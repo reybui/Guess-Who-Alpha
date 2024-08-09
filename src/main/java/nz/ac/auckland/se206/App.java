@@ -2,8 +2,6 @@ package nz.ac.auckland.se206;
 
 import java.io.IOException;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -73,29 +71,16 @@ public class App extends Application {
    * @throws IOException if the FXML file is not found
    */
   public static void openChat(MouseEvent event, String role) throws IOException {
-    Task<Void> task =
-        new Task<Void>() {
-          @Override
-          protected Void call() throws IOException {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/chat.fxml"));
-            Parent root = loader.load();
+    FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/chat.fxml"));
+    Parent root = loader.load();
 
-            ChatController chatController = loader.getController();
-            chatController.setRole(role);
+    ChatController chatController = loader.getController();
+    chatController.setRole(role);
 
-            Platform.runLater(
-                () -> {
-                  Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                  Scene scene = new Scene(root);
-                  stage.setScene(scene);
-                  stage.show();
-                });
-
-            return null;
-          }
-        };
-
-    new Thread(task).start();
+    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    scene = new Scene(root);
+    stage.setScene(scene);
+    stage.show();
   }
 
   /**
@@ -116,8 +101,6 @@ public class App extends Application {
   public static void openLetter(MouseEvent event) throws IOException {
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/letter.fxml"));
     Parent root = loader.load();
-
-    // LetterController letterController = loader.getController();
 
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     scene = new Scene(root);

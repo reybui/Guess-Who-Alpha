@@ -110,33 +110,36 @@ public class ChatController {
     this.role = role;
     setVoiceType(role);
 
-    Task<Void> task =
-        new Task<Void>() {
-          @Override
-          protected Void call() throws Exception {
-            try {
-              ApiProxyConfig config = ApiProxyConfig.readConfig();
-              chatCompletionRequest =
-                  new ChatCompletionRequest(config)
-                      .setN(1)
-                      .setTemperature(0.4)
-                      .setTopP(0.5)
-                      .setMaxTokens(100);
-              runGpt(new ChatMessage("system", getSystemPrompt()));
-            } catch (ApiProxyException e) {
-              e.printStackTrace();
-            }
-            return null;
-          }
-        };
+    Platform.runLater(
+        () -> {
+          Task<Void> task =
+              new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                  try {
+                    ApiProxyConfig config = ApiProxyConfig.readConfig();
+                    chatCompletionRequest =
+                        new ChatCompletionRequest(config)
+                            .setN(1)
+                            .setTemperature(0.4)
+                            .setTopP(0.5)
+                            .setMaxTokens(100);
+                    runGpt(new ChatMessage("system", getSystemPrompt()));
+                  } catch (ApiProxyException e) {
+                    e.printStackTrace();
+                  }
+                  return null;
+                }
+              };
 
-    task.setOnFailed(
-        event -> {
-          Throwable exception = task.getException();
-          Platform.runLater(() -> exception.printStackTrace());
+          task.setOnFailed(
+              event -> {
+                Throwable exception = task.getException();
+                Platform.runLater(() -> exception.printStackTrace());
+              });
+
+          new Thread(task).start();
         });
-
-    new Thread(task).start();
   }
 
   /**
