@@ -20,7 +20,6 @@ import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.CountdownTimer;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
-import nz.ac.auckland.se206.speech.TextToSpeech;
 import nz.ac.auckland.se206.speech.VoiceTypes.VoiceType;
 
 /**
@@ -180,7 +179,7 @@ public class ChatController {
           Platform.runLater(
               () -> {
                 appendChatMessage(responseMsg, this.role);
-                TextToSpeech.speak(responseMsg.getContent(), voiceType);
+                // TextToSpeech.speak(responseMsg.getContent(), voiceType);
               });
         });
     // Create a background task to run the GPT model

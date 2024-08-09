@@ -9,17 +9,17 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="789.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.ChatController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="871.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.ChatController">
   <children>
-    <TextArea fx:id="txtaChat" editable="false" layoutX="14.0" layoutY="456.0" prefHeight="97.0" prefWidth="435.0" wrapText="true" />
-    <TextField fx:id="txtInput" layoutX="14.0" layoutY="561.0" prefHeight="26.0" prefWidth="435.0" />
-    <Button fx:id="btnSend" layoutX="462.0" layoutY="561.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="26.0" prefWidth="63.0" text="Send" />
-    <Button layoutX="536.0" layoutY="561.0" mnemonicParsing="false" onAction="#onGoBack" prefHeight="26.0" prefWidth="114.0" text="Exit Conversation" />
-      <ImageView fitHeight="485.0" fitWidth="789.0" preserveRatio="true">
+    <TextArea fx:id="txtaChat" editable="false" layoutX="14.0" layoutY="502.0" prefHeight="75.0" prefWidth="435.0" wrapText="true" />
+    <TextField fx:id="txtInput" layoutX="14.0" layoutY="587.0" prefHeight="26.0" prefWidth="435.0" />
+    <Button fx:id="btnSend" layoutX="457.0" layoutY="587.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="26.0" prefWidth="63.0" text="Send" />
+    <Button layoutX="530.0" layoutY="587.0" mnemonicParsing="false" onAction="#onGoBack" prefHeight="26.0" prefWidth="114.0" text="Exit Conversation" />
+      <ImageView fitHeight="497.0" fitWidth="897.0" preserveRatio="true">
          <image>
-            <Image url="@../images/palace.png" />
+            <Image url="@../images/castle.png" />
          </image></ImageView>
-      <Label fx:id="lblTime" layoutX="624.0" layoutY="488.0" prefHeight="37.0" prefWidth="139.0" text="Label" textFill="WHITE">
+      <Label fx:id="lblTime" layoutX="662.0" layoutY="524.0" prefHeight="37.0" prefWidth="139.0" text="Label" textFill="WHITE">
          <font>
             <Font name="Arial" size="40.0" />
          </font></Label>

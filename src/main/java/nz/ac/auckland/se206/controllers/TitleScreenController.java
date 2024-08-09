@@ -14,8 +14,8 @@ public class TitleScreenController {
   @FXML
   private void initialize() {
     TextToSpeech.speak(
-        "Someone has stolen the kings crown! It is your job to get to the bottom of this, and to"
-            + " catch the thief!",
+        "Detective, Someone has stolen the kings crown! It is your job to get to the bottom of"
+            + " this",
         VoiceType.NARRORATOR);
   }
 
