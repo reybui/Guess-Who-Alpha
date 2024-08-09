@@ -36,14 +36,18 @@ public class Guessing implements GameState {
   @Override
   public void handleRectangleClick(MouseEvent event, String rectangleId) throws IOException {
     String thiefId = context.getRectIdToGuess();
+    String gameOvermsg = "";
     if (rectangleId.equals(thiefId)) {
       TextToSpeech.speak("Correct! You won! This is the thief", VoiceType.NARRORATOR);
+      gameOvermsg = "You won! The thief has been caught!";
     } else {
       TextToSpeech.speak("You lost! The thief lives to steal another day", VoiceType.NARRORATOR);
+      gameOvermsg = "You lost! The thief got away!";
     }
     context.setState(context.getGameOverState());
     RoomController roomController = (RoomController) App.getController();
     roomController.disableTimer();
+    roomController.setGameOverText(gameOvermsg);
   }
 
   /**

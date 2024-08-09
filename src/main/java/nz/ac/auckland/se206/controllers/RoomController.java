@@ -28,6 +28,7 @@ public class RoomController {
   @FXML private Rectangle rectGuard;
   @FXML private Label lblTime;
   @FXML private Button btnGuess;
+  @FXML private Label lblGameOver;
 
   private static boolean isFirstTimeInit = true;
   private static GameStateContext context = new GameStateContext();
@@ -140,5 +141,9 @@ public class RoomController {
 
   public void disableTimer() {
     lblTime.setVisible(false);
+  }
+
+  public void setGameOverText(String text) {
+    lblGameOver.setText(text);
   }
 }

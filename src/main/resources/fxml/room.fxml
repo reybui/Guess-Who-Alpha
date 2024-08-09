@@ -28,5 +28,10 @@
             <Font size="15.0" />
          </font></Button>
       <Rectangle fx:id="rectLetter" arcHeight="5.0" arcWidth="5.0" fill="WHITE" focusTraversable="true" height="28.0" layoutX="454.0" layoutY="423.0" onMouseClicked="#handleRectangleClick" onMouseEntered="#handleMouseEnter" onMouseExited="#handleMouseExit" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="46.0" />
+      <Label fx:id="lblGameOver" layoutX="16.0" layoutY="490.0" prefHeight="57.0" prefWidth="297.0" textFill="WHITE">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+      </Label>
    </children>
 </Pane>
