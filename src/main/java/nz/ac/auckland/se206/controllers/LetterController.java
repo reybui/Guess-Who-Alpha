@@ -11,7 +11,7 @@ import nz.ac.auckland.se206.CountdownTimer;
 
 public class LetterController {
 
-  @FXML Label lblTime;
+  @FXML private Label lblTime;
 
   private CountdownTimer countdownTimer = CountdownTimer.getInstance();
 
@@ -41,7 +41,7 @@ public class LetterController {
    * @throws IOException if there is an I/O error
    */
   @FXML
-  public void onBack(ActionEvent event) throws ApiProxyException, IOException {
+  private void onBack(ActionEvent event) throws ApiProxyException, IOException {
     App.setRoot("room");
   }
 }

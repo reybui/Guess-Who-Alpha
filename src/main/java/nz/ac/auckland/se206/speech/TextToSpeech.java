@@ -29,6 +29,7 @@ public class TextToSpeech {
       throw new IllegalArgumentException("Text should not be null or empty");
     }
 
+    // Create a background task to convert the text to speech and play the audio
     Task<Void> backgroundTask =
         new Task<>() {
           @Override
@@ -52,13 +53,13 @@ public class TextToSpeech {
                   voice = Voice.GOOGLE_EN_GB_STANDARD_F;
                   break;
               }
-
+              // Create a text to speech request
               TextToSpeechRequest ttsRequest = new TextToSpeechRequest(config);
               ttsRequest.setText(text).setProvider(provider).setVoice(voice);
 
               TextToSpeechResult ttsResult = ttsRequest.execute();
               String audioUrl = ttsResult.getAudioUrl();
-
+              // Play the audio
               try (InputStream inputStream =
                   new BufferedInputStream(new URL(audioUrl).openStream())) {
                 Player player = new Player(inputStream);
@@ -73,7 +74,7 @@ public class TextToSpeech {
             return null;
           }
         };
-
+    // Start the background task
     Thread backgroundThread = new Thread(backgroundTask);
     backgroundThread.setDaemon(true); // Ensure the thread does not prevent JVM shutdown
     backgroundThread.start();

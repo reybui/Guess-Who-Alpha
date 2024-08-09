@@ -5,15 +5,16 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class CountdownTimer {
-  private static final int INITIAL_TIME = 10; // 2 minutes in seconds
+  private static final int INITIAL_TIME = 120; // 2 minutes in seconds
   private static final int GUESSING_TIME = 10;
+
+  private static CountdownTimer instance;
+
   private int remainingTime;
   private ScheduledExecutorService scheduler;
   private Runnable onTick;
   private Runnable onFinish;
   private boolean isGuessingState = false;
-
-  private static CountdownTimer instance;
 
   public CountdownTimer() {
     remainingTime = INITIAL_TIME;

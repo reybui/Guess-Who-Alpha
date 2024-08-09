@@ -20,6 +20,7 @@ import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.CountdownTimer;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
+import nz.ac.auckland.se206.speech.TextToSpeech;
 import nz.ac.auckland.se206.speech.VoiceTypes.VoiceType;
 
 /**
@@ -108,13 +109,14 @@ public class ChatController {
   public void setRole(String role) {
     this.role = role;
     setVoiceType(role);
-
+    // Run the GPT model with the system prompt
     Platform.runLater(
         () -> {
           Task<Void> task =
               new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
+                  // Initialize the ChatCompletionRequest
                   try {
                     ApiProxyConfig config = ApiProxyConfig.readConfig();
                     chatCompletionRequest =
@@ -123,6 +125,7 @@ public class ChatController {
                             .setTemperature(0.4)
                             .setTopP(0.5)
                             .setMaxTokens(100);
+                    // Run the GPT model with the system prompt
                     runGpt(new ChatMessage("system", getSystemPrompt()));
                   } catch (ApiProxyException e) {
                     e.printStackTrace();
@@ -130,7 +133,7 @@ public class ChatController {
                   return null;
                 }
               };
-
+          // Run the GPT model with the system prompt
           task.setOnFailed(
               event -> {
                 Throwable exception = task.getException();
@@ -158,6 +161,7 @@ public class ChatController {
    * @throws ApiProxyException if there is an error communicating with the API proxy
    */
   private void runGpt(ChatMessage msg) {
+    // Create a background task to run the GPT model
     Task<ChatMessage> task =
         new Task<ChatMessage>() {
           @Override
@@ -169,23 +173,23 @@ public class ChatController {
             return result.getChatMessage();
           }
         };
-
+    // Create a background task to run the GPT model
     task.setOnSucceeded(
         event -> {
           ChatMessage responseMsg = task.getValue();
           Platform.runLater(
               () -> {
                 appendChatMessage(responseMsg, this.role);
-                // TextToSpeech.speak(responseMsg.getContent(), voiceType);
+                TextToSpeech.speak(responseMsg.getContent(), voiceType);
               });
         });
-
+    // Create a background task to run the GPT model
     task.setOnFailed(
         event -> {
           Throwable exception = task.getException();
           exception.printStackTrace();
         });
-
+    // Create a background task to run the GPT model
     new Thread(task).start();
   }
 

@@ -33,8 +33,8 @@ public class RoomController {
 
   private static boolean isFirstTimeInit = true;
   private static GameStateContext context = new GameStateContext();
-  private boolean guessClicked = false;
 
+  private boolean guessClicked = false;
   private CountdownTimer countdownTimer = CountdownTimer.getInstance();
 
   /**
