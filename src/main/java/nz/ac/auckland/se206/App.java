@@ -35,11 +35,12 @@ public class App extends Application {
    * @throws IOException if the FXML file is not found
    */
   public static void setRoot(String fxml) throws IOException {
-    // scene.setRoot(loadFxml(fxml));
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/" + fxml + ".fxml"));
     Parent root = loader.load();
     scene.setRoot(root);
     currentController = loader.getController();
+    Stage stage = (Stage) scene.getWindow();
+    stage.sizeToScene();
   }
 
   /**
@@ -91,7 +92,7 @@ public class App extends Application {
    */
   @Override
   public void start(final Stage stage) throws IOException {
-    Parent root = loadFxml("room");
+    Parent root = loadFxml("titleScreen");
     scene = new Scene(root);
     stage.setScene(scene);
     stage.show();
