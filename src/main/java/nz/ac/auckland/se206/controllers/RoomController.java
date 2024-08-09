@@ -14,6 +14,7 @@ import nz.ac.auckland.se206.CountdownTimer;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.speech.TextToSpeech;
 import nz.ac.auckland.se206.speech.VoiceTypes.VoiceType;
+import nz.ac.auckland.se206.states.GameStarted;
 import nz.ac.auckland.se206.states.Guessing;
 
 /**
@@ -65,11 +66,13 @@ public class RoomController {
     if (context.getState() instanceof Guessing) {
       context.setState(context.getGameOverState());
       TextToSpeech.speak("No guess was made, you lost!", VoiceType.NARRORATOR);
-    } else {
+    } else if (context.getState() instanceof GameStarted) {
       TextToSpeech.speak("Time's up! Make a guess on who the suspect is", VoiceType.NARRORATOR);
-      context.setState(context.getGuessingState());
       countdownTimer.resetToGuessingTime();
+      context.setState(context.getGuessingState());
       btnGuess.disableProperty().setValue(true);
+    } else {
+      return;
     }
   }
 
